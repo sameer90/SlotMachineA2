@@ -1,40 +1,42 @@
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
 var objects;
 (function (objects) {
-    var Button = (function () {
-        function Button(path, x, y) {
-            this.setX(x);
-            this.setY(y);
-            this._buttonImage = new createjs.Bitmap(path);
-            this._buttonImage.x = this._x;
-            this._buttonImage.y = this._y;
-            this._buttonImage.addEventListener("mouseover", this._buttonOver);
-            this._buttonImage.addEventListener("mouseout", this._buttonOut);
+    var Button = (function (_super) {
+        __extends(Button, _super);
+        //public image: createjs.Bitmap;
+        function Button(imageString, x, y) {
+            _super.call(this, imageString);
+            //this.image = new createjs.Bitmap(imageString);
+            //this.image.regX = this.image.getBounds().width * 0.5;
+            //this.image.regY = this.image.getBounds().height * 0.5;
+            //this.image.x = x;
+            //this.image.y = y;
+            this.regX = this.getBounds().width * 0.5;
+            this.regY = this.getBounds().height * 0.5;
+            this.x = x;
+            this.y = y;
+            //create event listeners for mouseover and mouseout events
+            //this.image.on("mouseover", this.OnOver, this);
+            //this.image.on("mouseout", this.OnOut, this);
+            this.on("mouseover", this.OnOver, this);
+            this.on("mouseout", this.OnOut, this);
         }
-        // PUBLIC PROPERTIES
-        Button.prototype.getImage = function () {
-            return this._buttonImage;
+        //public methods
+        Button.prototype.OnOver = function (event) {
+            //this.image.alpha = 0.8;
+            this.alpha = 0.8;
         };
-        Button.prototype.getX = function () {
-            return this._x;
-        };
-        Button.prototype.getY = function () {
-            return this._y;
-        };
-        Button.prototype.setX = function (x) {
-            this._x = x;
-        };
-        Button.prototype.setY = function (y) {
-            this._y = y;
-        };
-        // EVENT HANDLERS
-        Button.prototype._buttonOut = function (event) {
-            event.currentTarget.alpha = 1.0;
-        };
-        Button.prototype._buttonOver = function (event) {
-            event.currentTarget.alpha = 0.5;
+        Button.prototype.OnOut = function (event) {
+            //this.image.alpha = 1.0;
+            this.alpha = 1.0;
         };
         return Button;
-    })();
+    })(createjs.Bitmap);
     objects.Button = Button;
 })(objects || (objects = {}));
 //# sourceMappingURL=button.js.map

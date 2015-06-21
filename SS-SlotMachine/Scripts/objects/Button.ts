@@ -1,57 +1,39 @@
 ﻿module objects {
-export class Button {
 
-    // PRIVATE INSTANCE VARIABLES +++++++++++++++++++++++++++++++++++++++++++++++++
-    private _buttonImage: createjs.Bitmap;
-    private _x: number;
-    private _y: number;
+    export class Button extends createjs.Bitmap {
 
-    constructor(path: string, x: number, y: number) {
-        this.setX(x);
-        this.setY(y);
+        //public image: createjs.Bitmap;
 
-        this._buttonImage = new createjs.Bitmap(path);
-        this._buttonImage.x = this._x;
-        this._buttonImage.y = this._y;
-        this._buttonImage.addEventListener("mouseover", this._buttonOver);
-        this._buttonImage.addEventListener("mouseout", this._buttonOut);
+        constructor(imageString: string, x: number, y: number) {
+            super(imageString);
+            //this.image = new createjs.Bitmap(imageString);
+            //this.image.regX = this.image.getBounds().width * 0.5;
+            //this.image.regY = this.image.getBounds().height * 0.5;
+            //this.image.x = x;
+            //this.image.y = y;
+            this.regX = this.getBounds().width * 0.5;
+            this.regY = this.getBounds().height * 0.5;
+            this.x = x;
+            this.y = y;
+
+
+            //create event listeners for mouseover and mouseout events
+            //this.image.on("mouseover", this.OnOver, this);
+            //this.image.on("mouseout", this.OnOut, this);
+            this.on("mouseover", this.OnOver, this);
+            this.on("mouseout", this.OnOut, this);
+        }
+
+        //public methods
+        public OnOver(event: createjs.MouseEvent):void {
+            //this.image.alpha = 0.8;
+            this.alpha = 0.8;
+        }
+
+        public OnOut(event: createjs.MouseEvent):void {
+            //this.image.alpha = 1.0;
+            this.alpha = 1.0;
+        }
+
     }
-
-    // PUBLIC PROPERTIES
-    public getImage(): createjs.Bitmap {
-
-        return this._buttonImage;
-    }
-
-    public getX(): number {
-        return this._x;
-    }
-
-    public getY(): number {
-        return this._y;
-    }
-
-    public setX(x: number) {
-        this._x = x;
-    }
-
-    public setY(y: number) {
-        this._y = y;
-    }
-
-    // EVENT HANDLERS
-
-    private _buttonOut(event: createjs.MouseEvent): void {
-        event.currentTarget.alpha = 1.0;
-    }
-
-    private _buttonOver(event: createjs.MouseEvent): void {
-        event.currentTarget.alpha = 0.5;
-    }
-
-} 
-
 }
-
-
-

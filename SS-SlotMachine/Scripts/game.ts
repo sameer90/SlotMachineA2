@@ -1,258 +1,219 @@
-﻿/// <reference path="objects/button.ts" />
+﻿/// <reference path="typings/stats/stats.d.ts" />
+/// <reference path="typings/easeljs/easeljs.d.ts" />
+/// <reference path="typings/tweenjs/tweenjs.d.ts" />
+/// <reference path="typings/soundjs/soundjs.d.ts" />
+/// <reference path="typings/preloadjs/preloadjs.d.ts" />
 
 
-var canvas;
+// Game Framework Variables
+var canvas = document.getElementById("canvas");
 var stage: createjs.Stage;
+var stats: Stats;
 
-// Game Objects 
-var game: createjs.Container;
-var background: createjs.Bitmap;
-var spinButton: objects.Button;
-var resetButton: objects.Button;
-var tiles: createjs.Bitmap[] = [];
-var tileContainers: createjs.Container[] = [];
+var assets: createjs.LoadQueue;
+var manifest = [
+    { id: "rollButton", src: "assets/images/roll.png" }    
+];
+
 
 // Game Variables
-var playerMoney = 1000;
-var winnings = 0;
-var jackpot = 5000;
-var turn = 0;
-var playerBet = 0;
-var winNumber = 0;
-var lossNumber = 0;
-var spinResult;
-var fruits = "";
-var winRatio = 0;
+var helloLabel: createjs.Text; 
+
+var diceVal1: createjs.Text; 
+var diceVal2: createjs.Text; 
+
+var dice1: createjs.Bitmap;
+var dice2: createjs.Bitmap;
+// create a reference
+//var rollButton: createjs.Bitmap;
+var rollButton: objects.Button;
 
 
-/* Tally Variables */
-var grapes = 0;
-var bananas = 0;
-var oranges = 0;
-var cherries = 0;
-var bars = 0;
-var bells = 0;
-var sevens = 0;
-var blanks = 0;
-
+// Preloader Function
+function preload() {
+    assets = new createjs.LoadQueue();
+    assets.installPlugin(createjs.Sound);
+    // event listener triggers when assets are completely loaded
+    assets.on("complete", init, this); 
+    assets.loadManifest(manifest);
+    //Setup statistics object
+    setupStats();
+}
+                
+// Callback function that initializes game objects
 function init() {
-    canvas = document.getElementById("canvas");
-    stage = new createjs.Stage(canvas);
-    stage.enableMouseOver(20); // Enable mouse events
-    createjs.Ticker.setFPS(60); // 60 frames per second
-    createjs.Ticker.addEventListener("tick", gameLoop);
-
+    stage = new createjs.Stage(canvas); // reference to the stage
+    stage.enableMouseOver(20);
+    createjs.Ticker.setFPS(60); // framerate 60 fps for the game
+    // event listener triggers 60 times every second
+    createjs.Ticker.on("tick", gameLoop); 
+    
+    // calling main game function
     main();
 }
 
+// function to setup stat counting
+function setupStats() {
+    stats = new Stats();
+    stats.setMode(0); // set to fps
+
+    // align bottom-right
+    stats.domElement.style.position = 'absolute';
+    stats.domElement.style.left = '330px';
+    stats.domElement.style.top = '10px';
+
+    document.body.appendChild(stats.domElement);
+}
+
+
+// Callback function that creates our Main Game Loop - refreshed 60 fps
 function gameLoop() {
+    stats.begin(); // Begin measuring
 
+    stage.update();
 
-    stage.update(); // Refreshes our stage
+    stats.end(); // end measuring
 }
 
-
-/* Utility function to reset all fruit tallies */
-function resetFruitTally() {
-    grapes = 0;
-    bananas = 0;
-    oranges = 0;
-    cherries = 0;
-    bars = 0;
-    bells = 0;
-    sevens = 0;
-    blanks = 0;
-}
-
-// Event handlers
-
-/*function spinButtonOut() {
-
-    spinButton.alpha = 1.0;
-
-
-}
-
-function spinButtonOver() {
-    spinButton.alpha = 0.5;
-
-}*/
-
-
-function spinReels() {
-    // Add Spin Reels code here
-    spinResult = Reels();
-    fruits = spinResult[0] + " - " + spinResult[1] + " - " + spinResult[2];
-    console.log(fruits);
-
-
-    for (var tile = 0; tile < 3; tile++) {
-        if (turn > 0) {
-            game.removeChild(tiles[tile]);
+// Callback function that allows me to respond to button click events
+function rollButtonClicked(event: createjs.MouseEvent) {
+    for (var spin = 0; spin < 2; spin++) {   
+        var rand = Math.floor((Math.random() * 6) + 1);
+        switch (rand) {
+            case 1:
+                createImageandText("dice1.png", "1", spin);
+                break;
+            case 2:
+                createImageandText("dice2.png", "2", spin);
+                break;
+            case 3:
+                createImageandText("dice3.png", "3", spin);
+                break;
+            case 4:
+                createImageandText("dice4.png", "4", spin);
+                break;
+            case 5:
+                createImageandText("dice5.jpg", "5", spin);
+                break;
+            case 6:
+                createImageandText("dice6.png", "6", spin);
+                break;             
         }
-        tiles[tile] = new createjs.Bitmap("assets/images/" + spinResult[tile] + ".png");
-        tiles[tile].x = 59 + (105 * tile);
-        tiles[tile].y = 188;
-        
-        game.addChild(tiles[tile]);
-        console.log(game.getNumChildren());
-    }
-
-
-}
-
-/* Utility function to check if a value falls within a range of bounds */
-function checkRange(value, lowerBounds, upperBounds) {
-    if (value >= lowerBounds && value <= upperBounds) {
-        return value;
-    }
-    else {
-        return !value;
     }
 }
 
-/* When this function is called it determines the betLine results.
-e.g. Bar - Orange - Banana */
-function Reels() {
-    var betLine = [" ", " ", " "];
-    var outCome = [0, 0, 0];
+// Callback functions that change the alpha transparency of the button
 
-    for (var spin = 0; spin < 3; spin++) {
-        outCome[spin] = Math.floor((Math.random() * 65) + 1);
-        switch (outCome[spin]) {
-            case checkRange(outCome[spin], 1, 27):  // 41.5% probability
-                betLine[spin] = "blank";
-                blanks++;
-                break;
-            case checkRange(outCome[spin], 28, 37): // 15.4% probability
-                betLine[spin] = "grapes";
-                grapes++;
-                break;
-            case checkRange(outCome[spin], 38, 46): // 13.8% probability
-                betLine[spin] = "banana";
-                bananas++;
-                break;
-            case checkRange(outCome[spin], 47, 54): // 12.3% probability
-                betLine[spin] = "orange";
-                oranges++;
-                break;
-            case checkRange(outCome[spin], 55, 59): //  7.7% probability
-                betLine[spin] = "cherry";
-                cherries++;
-                break;
-            case checkRange(outCome[spin], 60, 62): //  4.6% probability
-                betLine[spin] = "bar";
-                bars++;
-                break;
-            case checkRange(outCome[spin], 63, 64): //  3.1% probability
-                betLine[spin] = "bell";
-                bells++;
-                break;
-            case checkRange(outCome[spin], 65, 65): //  1.5% probability
-                betLine[spin] = "seven";
-                sevens++;
-                break;
-        }
-    }
-    return betLine;
+// Mouseover event
+/*
+function rollButtonOver() {
+    rollButton.alpha = 0.8;
 }
+*/
 
-
-/* This function calculates the player's winnings, if any */
-function determineWinnings() {
-    if (blanks == 0) {
-        if (grapes == 3) {
-            winnings = playerBet * 10;
-        }
-        else if (bananas == 3) {
-            winnings = playerBet * 20;
-        }
-        else if (oranges == 3) {
-            winnings = playerBet * 30;
-        }
-        else if (cherries == 3) {
-            winnings = playerBet * 40;
-        }
-        else if (bars == 3) {
-            winnings = playerBet * 50;
-        }
-        else if (bells == 3) {
-            winnings = playerBet * 75;
-        }
-        else if (sevens == 3) {
-            winnings = playerBet * 100;
-        }
-        else if (grapes == 2) {
-            winnings = playerBet * 2;
-        }
-        else if (bananas == 2) {
-            winnings = playerBet * 2;
-        }
-        else if (oranges == 2) {
-            winnings = playerBet * 3;
-        }
-        else if (cherries == 2) {
-            winnings = playerBet * 4;
-        }
-        else if (bars == 2) {
-            winnings = playerBet * 5;
-        }
-        else if (bells == 2) {
-            winnings = playerBet * 10;
-        }
-        else if (sevens == 2) {
-            winnings = playerBet * 20;
-        }
-        else {
-            winnings = playerBet * 1;
-        }
-
-        if (sevens == 1) {
-            winnings = playerBet * 5;
-        }
-        winNumber++;
-       // showWinMessage();
-    }
-    else {
-        lossNumber++;
-      //  showLossMessage();
-    }
-
+// Mouseout event
+/*
+function rollButtonOut() {
+    rollButton.alpha = 1.0;
 }
+*/
 
-function createUI():void {
-    // instantiate my background
-    background = new createjs.Bitmap("assets/images/background.png");
-    game.addChild(background);
-
-    // Spin Button
-    spinButton = new objects.Button("assets/images/spinButton.png", 323, 376);
-    game.addChild(spinButton.getImage());
-
-    spinButton.getImage().addEventListener("click", spinReels);
-
-
-    // Reset Button
-    resetButton = new objects.Button("assets/images/resetButton.png", 38, 380);
-    game.addChild(resetButton.getImage());
-
-    resetButton.getImage().addEventListener("click", function () {
-        console.log("reset clicked");
-    });
-}
-
-
-
-// Our Game Kicks off in here
+// Our Main Game Function
 function main() {
-    // instantiate my game container
-    game = new createjs.Container();
-    game.x = 23;
-    game.y = 6;
+    
+    //helloLabel = new createjs.Text("Hello", "40px Consolas", "#000000");
+    //helloLabel.regX = helloLabel.getMeasuredWidth() * 0.5;
+    //helloLabel.regY = helloLabel.getMeasuredHeight() * 0.5;
+    //helloLabel.x = 160;
+    //helloLabel.y = 190;
+    //stage.addChild(helloLabel);
 
-    // Create Slotmachine User Interface
-    createUI();
 
 
-    stage.addChild(game);
+    diceVal1 = new createjs.Text("1", "40px Consolas", "#000000");
+    diceVal1.regX = diceVal1.getMeasuredWidth() * 0.5
+    diceVal1.regY = diceVal1.getMeasuredHeight() * 0.5;
+    diceVal1.x = 50;
+    diceVal1.y = 200;
+
+    diceVal2 = new createjs.Text("1", "40px Consolas", "#000000");
+    diceVal2.regX = diceVal1.getMeasuredWidth() * 0.5
+    diceVal2.regY = diceVal1.getMeasuredHeight() * 0.5;
+    diceVal2.x = 270;
+    diceVal2.y = 200;
+
+    dice1 = new createjs.Bitmap("assets/images/dice1.png");
+    dice1.x = 10;
+    dice1.y = 100;
+    dice1.scaleX = 0.5;
+    dice1.scaleY = 0.5;
+
+    dice2 = new createjs.Bitmap("assets/images/dice1.png");
+    dice2.x = 230;
+    dice2.y = 100;
+    dice2.scaleX = 0.5;
+    dice2.scaleY = 0.5;
+
+   
+    
+    rollButton = new objects.Button(assets.getResult("rollButton"), 160, 400);
+    //stage.addChild(rollButton.image);
+    //rollButton.image.on("click", rollButtonClicked);
+    stage.addChild(rollButton);
+    stage.addChild(diceVal1);
+    stage.addChild(diceVal2);
+    stage.addChild(dice1);
+    stage.addChild(dice2);
+    rollButton.on("click", rollButtonClicked);
+}
+function createImageandText(imagename,textval,spin)
+{
+    
+    if (spin == 0) {
+        stage.removeChild(dice1);
+        stage.removeChild(diceVal1);
+
+        diceVal1 = new createjs.Text(textval, "40px Consolas", "#000000");
+        diceVal1.regX = diceVal1.getMeasuredWidth() * 0.5
+        diceVal1.regY = diceVal1.getMeasuredHeight() * 0.5;
+        diceVal1.x = 50;
+        diceVal1.y = 200;
+
+        dice1 = new createjs.Bitmap("assets/images/"+imagename);
+        dice1.x = 10;
+        dice1.y = 100;
+        dice1.scaleX = 0.5;
+        dice1.scaleY = 0.5;
+
+        stage.addChild(diceVal1);
+        
+        stage.addChild(dice1);
+        
+    }
+    else if (spin == 1) {
+
+
+        stage.removeChild(dice2);
+
+        stage.removeChild(diceVal2);
+
+        diceVal2 = new createjs.Text(textval, "40px Consolas", "#000000");
+        diceVal2.regX = diceVal1.getMeasuredWidth() * 0.5
+        diceVal2.regY = diceVal1.getMeasuredHeight() * 0.5;
+        diceVal2.x = 270;
+        diceVal2.y = 200;
+
+
+
+        dice2 = new createjs.Bitmap("assets/images/" + imagename);
+        dice2.x = 230;
+        dice2.y = 100;
+        dice2.scaleX = 0.5;
+        dice2.scaleY = 0.5;
+
+
+        stage.addChild(dice2);
+        stage.addChild(diceVal2);
+
+    }
 }

@@ -70,9 +70,10 @@
     <Content Include="assets\images\orange.png" />
     <Content Include="assets\images\pee.png" />
     <Content Include="assets\images\seven.png" />
-    <Content Include="Scripts\app.js.map" />
+    <Content Include="Scripts\config\config.js.map" />
     <Content Include="Scripts\game.js.map" />
-    <Content Include="Scripts\objects\Button.js.map" />
+    <Content Include="Scripts\objects\button.js.map" />
+    <Content Include="Scripts\objects\label.js.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -87,14 +88,26 @@
     <Content Include="assets\images\spinButton.png" />
     <Content Include="css\game.css" />
     <Content Include="index.html" />
-    <Content Include="Scripts\app.js" />
+    <Content Include="Scripts\config\background.png" />
+    <Content Include="Scripts\config\banana.png" />
+    <Content Include="Scripts\config\bar.png" />
+    <Content Include="Scripts\config\bigwin.png" />
+    <Content Include="Scripts\config\config.js" />
+    <Content Include="Scripts\config\eggplant.png" />
+    <Content Include="Scripts\config\Fruits.jpg" />
+    <Content Include="Scripts\config\lemon.png" />
+    <Content Include="Scripts\config\melon.png" />
+    <Content Include="Scripts\config\orange.png" />
+    <Content Include="Scripts\config\pee.png" />
+    <Content Include="Scripts\config\seven.png" />
     <Content Include="Scripts\game.js" />
     <Content Include="Scripts\lib\easeljs-0.8.0.min.js" />
     <Content Include="Scripts\lib\preloadjs-0.6.0.min.js" />
     <Content Include="Scripts\lib\soundjs-0.6.0.min.js" />
+    <Content Include="Scripts\lib\Stats.js" />
     <Content Include="Scripts\lib\tweenjs-0.6.0.min.js" />
-    <Content Include="Scripts\objects\Button.js" />
-    <None Include="Scripts\_references.js" />
+    <Content Include="Scripts\objects\button.js" />
+    <Content Include="Scripts\objects\label.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -105,13 +118,16 @@
     <Folder Include="assets\fonts\" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Scripts\config\config.ts" />
     <TypeScriptCompile Include="Scripts\game.ts" />
-    <TypeScriptCompile Include="Scripts\lib\createjs-lib.d.ts" />
-    <TypeScriptCompile Include="Scripts\lib\easeljs.d.ts" />
-    <TypeScriptCompile Include="Scripts\lib\preloadjs.d.ts" />
-    <TypeScriptCompile Include="Scripts\lib\soundjs.d.ts" />
-    <TypeScriptCompile Include="Scripts\lib\tweenjs.d.ts" />
-    <TypeScriptCompile Include="Scripts\objects\Button.ts" />
+    <TypeScriptCompile Include="Scripts\objects\button.ts" />
+    <TypeScriptCompile Include="Scripts\objects\label.ts" />
+    <TypeScriptCompile Include="Scripts\typings\createjs-lib\createjs-lib.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\easeljs\easeljs.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\preloadjs\preloadjs.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\soundjs\soundjs.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\stats\stats.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\tweenjs\tweenjs.d.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

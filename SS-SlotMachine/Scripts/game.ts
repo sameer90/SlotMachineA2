@@ -12,19 +12,42 @@ var stats: Stats;
 var assets: createjs.LoadQueue;
 var manifest = [
     { id: "spinButton", src: "assets/images/spinButton.png" },    
-    { id: "resetButton", src: "assets/images/resetButton.png" }
+    { id: "resetButton", src: "assets/images/resetButton.png" },
+    { id: "betOneButton", src: "assets/images/betOneButton.png" },
+    { id: "betMaxButton", src: "assets/images/betMaxButton.png" }
 ];
 
 
-// Game Variables
+// Images
 var background: createjs.Bitmap; 
 var fruit1: createjs.Bitmap;
 var fruit2: createjs.Bitmap;
 var fruit3: createjs.Bitmap;
+
+//Text
+var winningText: createjs.Text;
+var accountText: createjs.Text;
+var jackpotText: createjs.Text;
+var bit10Text: createjs.Text;
+var bit30Text: createjs.Text;
+var winvalueText: createjs.Text;
+var totalBetText: createjs.Text;
+var totalText: createjs.Text;
+
+//Default Value
+var jackpot = 10000;
+var minBet = 0;
+var maxBet = 0;
+var defaultamount = 1000;
+var winvaluetxt = 0;
+var totalBetValue = 0;
+var curBetValue = 0;
+
 // create a reference
-//var rollButton: createjs.Bitmap;
 var spinButton: objects.Button;
 var resetButton: objects.Button;
+var betOneButton: objects.Button;
+var betMaxButton: objects.Button;
 
 
 // Preloader Function
@@ -72,7 +95,7 @@ function gameLoop() {
 // Callback function that allows me to respond to button click events
 function spinButtonClicked(event: createjs.MouseEvent) {
     for (var spin = 0; spin < 3; spin++) {   
-        var rand = Math.floor((Math.random() * 49) + 1);
+        var rand = Math.floor((Math.random() * 9) + 1);
         switch (rand) {
             case 1:
                 createImage("banana.png", spin);
@@ -111,23 +134,176 @@ function spinButtonClicked(event: createjs.MouseEvent) {
 // Our Main Game Function
 function main() {
     
-    background = new createjs.Bitmap("assets/images/background.png");
+    background = new createjs.Bitmap("assets/images/background1.png");
 
-    resetButton = new objects.Button(assets.getResult("resetButton"), 80, 550);   
+    resetButton = new objects.Button(assets.getResult("resetButton"), 80, 310);   
 
-    spinButton = new objects.Button(assets.getResult("spinButton"), 439, 550);
+    spinButton = new objects.Button(assets.getResult("spinButton"), 439, 310);
 
-    stage.addChild(background);
+    betMaxButton = new objects.Button(assets.getResult("betMaxButton"), 310, 310);
 
-    stage.addChild(resetButton);
+    betOneButton = new objects.Button(assets.getResult("betOneButton"), 200, 310);
+    
+    winningText = new createjs.Text("Welcome! Click Spin Button", "25px Consolas", "#FFFFFF");
+    winningText.x = 80;
+    winningText.y = 540;
 
-    stage.addChild(spinButton);
+    jackpotText = new createjs.Text(jackpot.toString(), "20px Consolas", "#FFFFFF");
+    jackpotText.x = 233;
+    jackpotText.y = 139;
 
-    spinButton.on("click",spinButtonClicked);
-    //resetButton.on("click", init());
+    accountText = new createjs.Text(defaultamount.toString(), "20px Consolas", "#FFFFFF");
+    accountText.x = 65;
+    accountText.y = 238;
+
+    winvalueText = new createjs.Text(winvaluetxt.toString(), "20px Consolas", "#FFFFFF");
+    winvalueText.x = 425;
+    winvalueText.y = 238;
+
+    stage.addChild(background); 
+    stage.addChild(resetButton);  
+    stage.addChild(betOneButton);  
+    stage.addChild(betMaxButton);    
+    stage.addChild(winningText);
+    stage.addChild(winvalueText);
+    stage.addChild(accountText);   
+    stage.addChild(spinButton);   
+    stage.addChild(jackpotText);
+
+    spinButton.on("click", spinButtonClicked);
+    betOneButton.on("click", doBet10);
+    betMaxButton.on("click", doBet30);
+    resetButton.on("click", resetValue);
 }
-function createImage(imagename,spin)
-{
+function resetValue() {    
+
+    jackpot = 10000;
+    minBet = 0;
+    maxBet = 0;
+    defaultamount = 1000;
+    winvaluetxt = 0;
+    totalBetValue = 0;
+
+    stage.removeChild(winningText);
+    stage.removeChild(jackpotText);
+    stage.removeChild(accountText);
+    stage.removeChild(winvalueText);
+    stage.removeChild(bit30Text);
+    stage.removeChild(bit10Text);
+    stage.removeChild(totalBetText);
+    stage.removeChild(totalText);
+
+    winningText = new createjs.Text("Welcome! Click Spin Button", "25px Consolas", "#FFFFFF");
+    winningText.x = 80;
+    winningText.y = 540;
+
+    jackpotText = new createjs.Text(jackpot.toString(), "20px Consolas", "#FFFFFF");
+    jackpotText.x = 233;
+    jackpotText.y = 139;
+
+    accountText = new createjs.Text(defaultamount.toString(), "20px Consolas", "#FFFFFF");
+    accountText.x = 65;
+    accountText.y = 238;
+
+    winvalueText = new createjs.Text(winvaluetxt.toString(), "20px Consolas", "#FFFFFF");
+    winvalueText.x = 425;
+    winvalueText.y = 238;
+
+    totalBetText = new createjs.Text(totalBetValue.toString(), "20px Consolas", "#FFFFFF");
+    totalBetText.x = 243;
+    totalBetText.y = 300;
+
+    totalText = new createjs.Text("Total", "20px Consolas", "#FFFFFF");
+    totalText.x = 228;
+    totalText.y = 270;
+
+    stage.addChild(totalText);
+
+    stage.addChild(winningText);  
+    stage.addChild(jackpotText);
+    stage.addChild(accountText);
+    stage.addChild(winvalueText);
+    stage.addChild(totalBetText);
+}
+function doBet30() {
+    if (totalBetValue < defaultamount) {
+
+        totalBetValue += 30;
+
+        stage.removeChild(accountText);
+        stage.removeChild(totalBetText);
+        stage.removeChild(bit30Text);
+
+        maxBet += 30;
+        bit30Text = new createjs.Text(maxBet.toString(), "20px Consolas", "#FFFFFF");
+        bit30Text.x = 300;
+        bit30Text.y = 238;
+
+        totalBetText = new createjs.Text(totalBetValue.toString(), "20px Consolas", "#FFFFFF");
+        totalBetText.x = 243;
+        totalBetText.y = 300;
+
+        totalText = new createjs.Text("Total", "20px Consolas", "#FFFFFF");
+        totalText.x = 228;
+        totalText.y = 270;
+
+        var remainingamount = defaultamount - totalBetValue;
+
+        accountText = new createjs.Text(remainingamount.toString(), "20px Consolas", "#FFFFFF");
+        accountText.x = 65;
+        accountText.y = 238;
+
+        stage.addChild(accountText);
+        stage.addChild(totalText);
+
+        stage.addChild(totalBetText);
+        stage.addChild(bit30Text);
+    }
+    else {
+        alert("You have no money");
+    }
+}
+function doBet10() {
+
+    if (totalBetValue < defaultamount) {
+        totalBetValue += 10;
+
+        stage.removeChild(accountText);
+        stage.removeChild(totalBetText);
+        stage.removeChild(bit10Text);
+
+        minBet += 10;
+        bit10Text = new createjs.Text(minBet.toString(), "20px Consolas", "#FFFFFF");
+        bit10Text.x = 190;
+        bit10Text.y = 238;
+
+        totalBetText = new createjs.Text(totalBetValue.toString(), "20px Consolas", "#FFFFFF");
+        totalBetText.x = 243;
+        totalBetText.y = 300;
+
+        totalText = new createjs.Text("Total", "20px Consolas", "#FFFFFF");
+        totalText.x = 228;
+        totalText.y = 270;
+
+        var remainingamount = defaultamount - totalBetValue;
+
+        accountText = new createjs.Text(remainingamount.toString(), "20px Consolas", "#FFFFFF");
+        accountText.x = 65;
+        accountText.y = 238;
+
+        stage.addChild(accountText);
+
+        stage.addChild(totalText);
+
+        stage.addChild(totalBetText);
+
+        stage.addChild(bit10Text);
+    }
+    else {
+        alert("You have no money");
+    }
+}
+function createImage(imagename,spin) {
     var obj;
     var x = 0;
     var y = 0;
@@ -150,6 +326,5 @@ function createImage(imagename,spin)
         obj = new createjs.Bitmap("assets/images/"+imagename);
         obj.x = x;
         obj.y = y;
-        stage.addChild(obj);
-   
+        stage.addChild(obj);   
 }

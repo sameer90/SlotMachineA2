@@ -63,6 +63,7 @@
     <Content Include="assets\images\banana.png" />
     <Content Include="assets\images\bar.png" />
     <Content Include="assets\images\bigwin.png" />
+    <Content Include="assets\images\blank.png" />
     <Content Include="assets\images\eggplant.png" />
     <Content Include="assets\images\Fruits.jpg" />
     <Content Include="assets\images\lemon.png" />

@@ -15,7 +15,7 @@ var manifest = [
     { id: "betOneButton", src: "assets/images/betOneButton.png" },
     { id: "betMaxButton", src: "assets/images/betMaxButton.png" }
 ];
-// Images
+//Images
 var background;
 var fruit1;
 var fruit2;
@@ -53,12 +53,12 @@ var timer1, timer2;
 var timerstatus = false;
 var objj, obj1, obj2;
 var totalBetBeforeReset = 0;
-// create a reference
+//create a reference
 var spinButton;
 var resetButton;
 var betOneButton;
 var betMaxButton;
-// Preloader Function
+//Preloader Function
 function preload() {
     assets = new createjs.LoadQueue();
     assets.installPlugin(createjs.Sound);
@@ -68,7 +68,7 @@ function preload() {
     //Setup statistics object
     setupStats();
 }
-// Callback function that initializes game objects
+//Callback function that initializes game objects
 function init() {
     stage = new createjs.Stage(canvas); // reference to the stage
     stage.enableMouseOver(20);
@@ -78,7 +78,7 @@ function init() {
     // calling main game function
     main();
 }
-// function to setup stat counting
+//function to setup stat counting
 function setupStats() {
     stats = new Stats();
     stats.setMode(0); // set to fps
@@ -88,7 +88,7 @@ function setupStats() {
     stats.domElement.style.top = '10px';
     // document.body.appendChild(stats.domElement);
 }
-// Callback function that creates our Main Game Loop - refreshed 60 fps
+//Callback function that creates our Main Game Loop - refreshed 60 fps
 function gameLoop() {
     stats.begin(); // Begin measuring
     stage.update();
@@ -102,45 +102,48 @@ function checkRange(value, lowerBounds, upperBounds) {
         return !value;
     }
 }
-//Function that shows the 
+//Callback function that allows me to respond to button click events
 function spinButtonClicked() {
     timerstatus = false;
     for (var spin = 0; spin < 3; spin++) {
-        var rand = Math.floor((Math.random() * 70) + 1);
+        var rand = Math.floor((Math.random() * 90) + 1);
         switch (rand) {
-            case checkRange(rand, 1, 27):
+            case checkRange(rand, 1, 20):
                 createImage("banana.png", spin);
                 winArray[spin] = "banana";
                 break;
-            case checkRange(rand, 28, 37):
+            case checkRange(rand, 20, 30):
                 createImage("bigwin.png", spin);
                 winArray[spin] = "bigwin";
                 break;
-            case checkRange(rand, 38, 46):
+            case checkRange(rand, 31, 33):
+                createImage("blank.png", spin);
+                break;
+            case checkRange(rand, 34, 42):
                 createImage("bar.png", spin);
                 winArray[spin] = "bar";
                 break;
-            case checkRange(rand, 47, 54):
+            case checkRange(rand, 43, 50):
                 createImage("eggplant.png", spin);
                 winArray[spin] = "eggplant";
                 break;
-            case checkRange(rand, 55, 59):
+            case checkRange(rand, 51, 64):
                 createImage("lemon.png", spin);
                 winArray[spin] = "lemon";
                 break;
-            case checkRange(rand, 60, 62):
+            case checkRange(rand, 65, 72):
                 createImage("melon.png", spin);
                 winArray[spin] = "melon";
                 break;
-            case checkRange(rand, 63, 66):
+            case checkRange(rand, 73, 79):
                 createImage("orange.png", spin);
                 winArray[spin] = "orange";
                 break;
-            case checkRange(rand, 67, 69):
+            case checkRange(rand, 80, 85):
                 createImage("pee.png", spin);
                 winArray[spin] = "pee";
                 break;
-            case checkRange(rand, 70, 70):
+            case checkRange(rand, 86, 90):
                 createImage("seven.png", spin);
                 winArray[spin] = "seven";
                 break;
@@ -148,7 +151,7 @@ function spinButtonClicked() {
     }
     calulateWIN();
 }
-//Our Main Game Function
+//our Main Game Function
 function main() {
     background = new createjs.Bitmap("assets/images/background1.png");
     resetButton = new objects.Button(assets.getResult("resetButton"), 80, 310);

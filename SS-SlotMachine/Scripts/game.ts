@@ -18,7 +18,7 @@ var manifest = [
 ];
 
 
-// Images
+//Images
 var background: createjs.Bitmap; 
 var fruit1: createjs.Bitmap;
 var fruit2: createjs.Bitmap;
@@ -62,14 +62,14 @@ var timerstatus = false;
 var objj, obj1, obj2;
 var totalBetBeforeReset = 0;
 
-// create a reference
+//create a reference
 var spinButton: objects.Button;
 var resetButton: objects.Button;
 var betOneButton: objects.Button;
 var betMaxButton: objects.Button;
 
 
-// Preloader Function
+//Preloader Function
 function preload() {
     assets = new createjs.LoadQueue();
     assets.installPlugin(createjs.Sound);
@@ -80,7 +80,7 @@ function preload() {
     setupStats();
 }
                 
-// Callback function that initializes game objects
+//Callback function that initializes game objects
 function init() {
     stage = new createjs.Stage(canvas); // reference to the stage
     stage.enableMouseOver(20);
@@ -92,7 +92,7 @@ function init() {
     main();
 }
 
-// function to setup stat counting
+//function to setup stat counting
 function setupStats() {
     stats = new Stats();
     stats.setMode(0); // set to fps
@@ -104,7 +104,7 @@ function setupStats() {
    // document.body.appendChild(stats.domElement);
 }
 
-// Callback function that creates our Main Game Loop - refreshed 60 fps
+//Callback function that creates our Main Game Loop - refreshed 60 fps
 function gameLoop() {
     stats.begin(); // Begin measuring
     stage.update();
@@ -118,7 +118,7 @@ function checkRange(value, lowerBounds, upperBounds) {
     }
 }
 
-// Callback function that allows me to respond to button click events
+//Callback function that allows me to respond to button click events
 function spinButtonClicked() {
     timerstatus = false;
     for (var spin = 0; spin < 3; spin++) {   
@@ -171,7 +171,7 @@ function spinButtonClicked() {
     calulateWIN();
 }
 
-// Our Main Game Function
+//our Main Game Function
 function main() {
     
     background = new createjs.Bitmap("assets/images/background1.png");

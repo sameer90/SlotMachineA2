@@ -63,10 +63,10 @@ var objj, obj1, obj2;
 var totalBetBeforeReset = 0;
 
 //create a reference
-var spinButton: objects.Button;
-var resetButton: objects.Button;
-var betOneButton: objects.Button;
-var betMaxButton: objects.Button;
+var spinButton: createjs.Bitmap;
+var resetButton: createjs.Bitmap;
+var betOneButton: createjs.Bitmap;
+var betMaxButton: createjs.Bitmap;
 
 
 //Preloader Function
@@ -176,13 +176,27 @@ function main() {
     
     background = new createjs.Bitmap("assets/images/background1.png");
 
-    resetButton = new objects.Button(assets.getResult("resetButton"), 80, 310);   
+    
+    resetButton = new createjs.Bitmap(assets.getResult("resetButton"));
+    resetButton.x = 60;
+    resetButton.y = 295;   
 
-    spinButton = new objects.Button(assets.getResult("spinButton"), 439, 310);
+    spinButton = new createjs.Bitmap(assets.getResult("spinButton"));
+    spinButton.x = 405;
+    spinButton.y = 290;
 
-    betMaxButton = new objects.Button(assets.getResult("betMaxButton"), 310, 310);
 
-    betOneButton = new objects.Button(assets.getResult("betOneButton"), 200, 310);
+    betMaxButton = new createjs.Bitmap(assets.getResult("betMaxButton"))
+    betMaxButton.x = 290;
+    betMaxButton.y = 295;
+
+
+    betOneButton = new createjs.Bitmap(assets.getResult("betOneButton"));
+    betOneButton.x = 180;
+    betOneButton.y = 295;
+
+    
+
     
     winningText = new createjs.Text("Welcome! Click Spin Button", "25px Consolas", "#FFFFFF");
     winningText.x = 80;

@@ -154,10 +154,18 @@ function spinButtonClicked() {
 //our Main Game Function
 function main() {
     background = new createjs.Bitmap("assets/images/background1.png");
-    resetButton = new objects.Button(assets.getResult("resetButton"), 80, 310);
-    spinButton = new objects.Button(assets.getResult("spinButton"), 439, 310);
-    betMaxButton = new objects.Button(assets.getResult("betMaxButton"), 310, 310);
-    betOneButton = new objects.Button(assets.getResult("betOneButton"), 200, 310);
+    resetButton = new createjs.Bitmap(assets.getResult("resetButton"));
+    resetButton.x = 60;
+    resetButton.y = 295;
+    spinButton = new createjs.Bitmap(assets.getResult("spinButton"));
+    spinButton.x = 405;
+    spinButton.y = 290;
+    betMaxButton = new createjs.Bitmap(assets.getResult("betMaxButton"));
+    betMaxButton.x = 290;
+    betMaxButton.y = 295;
+    betOneButton = new createjs.Bitmap(assets.getResult("betOneButton"));
+    betOneButton.x = 180;
+    betOneButton.y = 295;
     winningText = new createjs.Text("Welcome! Click Spin Button", "25px Consolas", "#FFFFFF");
     winningText.x = 80;
     winningText.y = 540;

@@ -102,7 +102,7 @@ function checkRange(value, lowerBounds, upperBounds) {
         return !value;
     }
 }
-// Function that shows the 
+//Function that shows the 
 function spinButtonClicked() {
     timerstatus = false;
     for (var spin = 0; spin < 3; spin++) {
@@ -148,7 +148,7 @@ function spinButtonClicked() {
     }
     calulateWIN();
 }
-// Our Main Game Function
+//Our Main Game Function
 function main() {
     background = new createjs.Bitmap("assets/images/background1.png");
     resetButton = new objects.Button(assets.getResult("resetButton"), 80, 310);

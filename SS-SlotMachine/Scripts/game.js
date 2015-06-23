@@ -37,6 +37,17 @@ var defaultamount = 1000;
 var winvaluetxt = 0;
 var totalBetValue = 0;
 var curBetValue = 0;
+var bananaScore = 1;
+var lemonScore = 2;
+var peeScore = 3;
+var melonScore = 4;
+var eggplantScore = 5;
+var orangeScore = 6;
+var sevenScore = 7;
+var bigWinScore = 100;
+var barScore = 30;
+var winScore = 0;
+var winArray = new Array();
 // create a reference
 var spinButton;
 var resetButton;
@@ -78,40 +89,53 @@ function gameLoop() {
     stage.update();
     stats.end(); // end measuring
 }
+function checkRange(value, lowerBounds, upperBounds) {
+    if (value >= lowerBounds && value <= upperBounds) {
+        return value;
+    }
+    else {
+        return !value;
+    }
+}
 // Callback function that allows me to respond to button click events
-function spinButtonClicked(event) {
+function spinButtonClicked() {
+    timerstatus = false;
     for (var spin = 0; spin < 3; spin++) {
-        var rand = Math.floor((Math.random() * 9) + 1);
+        var rand = Math.floor((Math.random() * 75) + 1);
         switch (rand) {
-            case 1:
+            case checkRange(rand, 1, 20):
+                createImage("blank.png", spin);
+                break;
+            case checkRange(rand, 21, 30):
                 createImage("banana.png", spin);
+                winArray[spin] = "banana";
                 break;
-            case 2:
+            case checkRange(rand, 31, 38):
                 createImage("bar.png", spin);
+                winArray[spin] = "bar";
                 break;
-            case 3:
+            case checkRange(rand, 39, 45):
                 createImage("bigwin.png", spin);
+                winArray[spin] = "bigwin";
                 break;
-            case 4:
+            case checkRange(rand, 46, 50):
                 createImage("eggplant.png", spin);
+                winArray[spin] = "eggplant";
                 break;
-            case 5:
+            case checkRange(rand, 51, 53):
                 createImage("lemon.png", spin);
                 break;
-            case 6:
+            case checkRange(rand, 54, 58):
                 createImage("melon.png", spin);
                 break;
-            case 7:
+            case checkRange(rand, 59, 62):
                 createImage("orange.png", spin);
                 break;
-            case 8:
+            case checkRange(rand, 63, 66):
                 createImage("pee.png", spin);
                 break;
-            case 9:
+            case checkRange(rand, 67, 75):
                 createImage("seven.png", spin);
-                break;
-            case 10:
-                createImage("blank.png", spin);
                 break;
         }
     }
@@ -144,7 +168,7 @@ function main() {
     stage.addChild(accountText);
     stage.addChild(spinButton);
     stage.addChild(jackpotText);
-    spinButton.on("click", spinButtonClicked);
+    spinButton.on("click", roller);
     betOneButton.on("click", doBet10);
     betMaxButton.on("click", doBet30);
     resetButton.on("click", resetValue);
@@ -156,7 +180,6 @@ function resetValue() {
     defaultamount = 1000;
     winvaluetxt = 0;
     totalBetValue = 0;
-    stage.removeChild(winningText);
     stage.removeChild(jackpotText);
     stage.removeChild(accountText);
     stage.removeChild(winvalueText);
@@ -164,6 +187,7 @@ function resetValue() {
     stage.removeChild(bit10Text);
     stage.removeChild(totalBetText);
     stage.removeChild(totalText);
+    stage.removeChild(winningText);
     winningText = new createjs.Text("Welcome! Click Spin Button", "25px Consolas", "#FFFFFF");
     winningText.x = 80;
     winningText.y = 540;
@@ -188,6 +212,12 @@ function resetValue() {
     stage.addChild(accountText);
     stage.addChild(winvalueText);
     stage.addChild(totalBetText);
+    stage.removeChild(objj);
+    stage.removeChild(obj1);
+    stage.removeChild(obj2);
+    clearInterval(timer1);
+    clearTimeout(timer2);
+    timerstatus = false;
 }
 function doBet30() {
     if (totalBetValue < defaultamount) {
@@ -271,5 +301,71 @@ function createImage(imagename, spin) {
     obj.x = x;
     obj.y = y;
     stage.addChild(obj);
+}
+var arr = new Array();
+arr[0] = "blank.png";
+arr[1] = "banana.png";
+arr[2] = "bar.png";
+arr[3] = "bigwin.png";
+arr[4] = "eggplant.png";
+arr[5] = "lemon.png";
+arr[6] = "melon.png";
+arr[7] = "orange.png";
+arr[8] = "pee.png";
+arr[9] = "seven.png";
+var rollcur = Math.floor((Math.random() * 9));
+var timer1, timer2;
+var timerstatus = false;
+var x1 = 0;
+var y1 = 347;
+var objj, obj1, obj2;
+function roller() {
+    if (totalBetValue == 0) {
+        alert("Please Bet");
+    }
+    else {
+        if (timerstatus == false) {
+            timerstatus = true;
+            stage.removeChild(winningText);
+            winningText = new createjs.Text("........Spinning.........", "25px Consolas", "#FFFFFF");
+            winningText.x = 80;
+            winningText.y = 540;
+            stage.addChild(winningText);
+            timer1 = setInterval(function () {
+                if (y1 + 15 > 465)
+                    y1 = 347;
+                x1 = 90;
+                stage.removeChild(objj);
+                objj = new createjs.Bitmap("assets/images/" + arr[Math.floor((Math.random() * 9))]);
+                objj.x = x1;
+                objj.y = y1;
+                stage.addChild(objj);
+                x1 = 220;
+                stage.removeChild(obj1);
+                obj1 = new createjs.Bitmap("assets/images/" + arr[Math.floor((Math.random() * 9))]);
+                obj1.x = x1;
+                obj1.y = y1;
+                stage.addChild(obj1);
+                x1 = 360;
+                stage.removeChild(obj2);
+                obj2 = new createjs.Bitmap("assets/images/" + arr[Math.floor((Math.random() * 9))]);
+                obj2.x = x1;
+                obj2.y = y1;
+                stage.addChild(obj2);
+                y1 = y1 + 15;
+            }, 100);
+            timer2 = setTimeout(function () {
+                stage.removeChild(objj);
+                stage.removeChild(obj1);
+                stage.removeChild(obj2);
+                spinButtonClicked();
+                clearInterval(timer1);
+                clearTimeout(timer2);
+            }, 8000);
+        }
+        else {
+            alert("Already Spinning");
+        }
+    }
 }
 //# sourceMappingURL=game.js.map

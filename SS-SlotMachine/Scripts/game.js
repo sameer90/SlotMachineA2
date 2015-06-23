@@ -106,44 +106,41 @@ function checkRange(value, lowerBounds, upperBounds) {
 function spinButtonClicked() {
     timerstatus = false;
     for (var spin = 0; spin < 3; spin++) {
-        var rand = Math.floor((Math.random() * 90) + 1);
+        var rand = Math.floor((Math.random() * 70) + 1);
         switch (rand) {
-            case checkRange(rand, 1, 20):
+            case checkRange(rand, 1, 27):
                 createImage("banana.png", spin);
                 winArray[spin] = "banana";
                 break;
-            case checkRange(rand, 20, 30):
+            case checkRange(rand, 28, 37):
                 createImage("bigwin.png", spin);
                 winArray[spin] = "bigwin";
                 break;
-            case checkRange(rand, 31, 33):
-                createImage("blank.png", spin);
-                break;
-            case checkRange(rand, 34, 42):
+            case checkRange(rand, 38, 46):
                 createImage("bar.png", spin);
                 winArray[spin] = "bar";
                 break;
-            case checkRange(rand, 43, 50):
+            case checkRange(rand, 47, 54):
                 createImage("eggplant.png", spin);
                 winArray[spin] = "eggplant";
                 break;
-            case checkRange(rand, 51, 64):
+            case checkRange(rand, 55, 59):
                 createImage("lemon.png", spin);
                 winArray[spin] = "lemon";
                 break;
-            case checkRange(rand, 65, 72):
+            case checkRange(rand, 60, 62):
                 createImage("melon.png", spin);
                 winArray[spin] = "melon";
                 break;
-            case checkRange(rand, 73, 79):
+            case checkRange(rand, 63, 66):
                 createImage("orange.png", spin);
                 winArray[spin] = "orange";
                 break;
-            case checkRange(rand, 80, 85):
+            case checkRange(rand, 67, 69):
                 createImage("pee.png", spin);
                 winArray[spin] = "pee";
                 break;
-            case checkRange(rand, 86, 90):
+            case checkRange(rand, 70, 70):
                 createImage("seven.png", spin);
                 winArray[spin] = "seven";
                 break;
